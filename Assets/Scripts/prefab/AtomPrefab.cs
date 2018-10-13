@@ -5,7 +5,9 @@ using UnityEngine;
 public class AtomPrefab : MonoBehaviour {
 
     private Color atomColor;
-    private Vector3 coordinates;
+    private Vector3 coordinates,scale = new Vector3(0,0,0);
+    private string parent;
+ 
 
     public Color AtomColor
     {
@@ -18,9 +20,24 @@ public class AtomPrefab : MonoBehaviour {
         get { return coordinates; }
         set { coordinates = value; }
     }
+
+    public Vector3 Scale
+    {
+        get { return scale; }
+        set { scale = value; }
+    }
+
+    public string Parent
+    {
+        get { return parent; }
+        set { parent = value; }
+    }
+
     // Use this for initialization
     void Start () {
         this.gameObject.transform.position = coordinates;
+        this.gameObject.transform.parent = GameObject.Find(parent).transform;
+        this.gameObject.transform.localScale = scale;
         this.gameObject.GetComponent<Renderer>().material.color = atomColor;
     }
 	

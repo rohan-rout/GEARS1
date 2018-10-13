@@ -7,12 +7,14 @@ using System.Text.RegularExpressions;
 public class Utility {
 
     private string filePath;
+    private double[] newCenter;
+
     public int numAtoms;
     public AtomAttributes[] atoms;
     public int[,] atomBonds;
+    public double[] scaleFactor = new double[3];
 
 
-    
     private double[] l = new double[3] ;
     private double[] angle = new double[3] ;
     private double[,] H = new double[3, 3];
@@ -30,11 +32,19 @@ public class Utility {
     private double[] cellSize = new double[3];
     private int[] numAtomsPerList,lList;
     private int[,,] lshd;
-    
+
+    private double[] maxPos = new double[3];
+    private double[] minPos = new double[3];
 
     public string FilePath{
         get { return filePath; }
         set { filePath = value; }
+    }
+
+    public double[] NewCenter
+    {
+        get { return newCenter; }
+        set { newCenter = value; }
     }
 
     public void ReadFile()
@@ -73,6 +83,13 @@ public class Utility {
                 else
                 {
                     double[] rr = new double[3] { float.Parse(cdnt[1]), float.Parse(cdnt[2]), float.Parse(cdnt[3]) };
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if( (double.Parse(cdnt[j + 1]) < minPos[j]) || (atomIndex == 0) )
+                            minPos[j] = double.Parse(cdnt[j + 1]);
+                        if( (double.Parse(cdnt[j + 1]) > maxPos[j]) || (atomIndex == 0) )
+                            maxPos[j] = double.Parse(cdnt[j + 1]);
+                    }  
                     atoms[atomIndex] = new AtomAttributes(cdnt[0],rr);
                     atomIndex++;
                     //Debug.Log(atoms[atomIndex].iatom+" , "+atoms[atomIndex].rr0[0] + " , " + atoms[atomIndex].rr0[1] + " , " + atoms[atomIndex].rr0[2]);
@@ -277,6 +294,25 @@ public class Utility {
         */
     }
 
+    public void computeDisplacement()
+    {
+        double[] originalCenter = new double[3];
+        
+
+        for (int index = 0; index < 3; index++)
+        {
+            originalCenter[index] = (maxPos[index] - minPos[index]) / 2.0;
+            scaleFactor[index] = newCenter[index] / originalCenter[index];
+        }
+
+        for(int atomIndex = 0; atomIndex < numAtoms; atomIndex++)
+        {
+            for (int i = 0; i < 3; i++)
+                atoms[atomIndex].rr0[i] = scaleFactor[i] * (atoms[atomIndex].rr0[i] - originalCenter[i]) + newCenter[i];
+        }
+            
+    }
+
     public void GetStructureData()
     {
         ReadFile();
@@ -285,6 +321,9 @@ public class Utility {
         RealToNormal();
         LinkedList();
         BondList();
+        //Debug.Log("Min: " + minPos[0] + "," + minPos[1] + "," + minPos[2]);
+        //Debug.Log("Max: " + maxPos[0] + "," + maxPos[1] + "," + maxPos[2]);
+        computeDisplacement();
     }
     
 }
