@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/TestCanvas.unity
+- path: Assets/Scenes/Demo4(LJ).unity
   isLoaded: 1
   isActive: 1

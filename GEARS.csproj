@@ -922,6 +922,7 @@
     <Compile Include="Assets\Scripts\Atom.cs" />
     <Compile Include="Assets\Scripts\AtomAttributes.cs" />
     <Compile Include="Assets\Scripts\Bond.cs" />
+    <Compile Include="Assets\Scripts\MolecularDynamics.cs" />
     <Compile Include="Assets\Scripts\prefab\AtomPrefab.cs" />
     <Compile Include="Assets\Scripts\prefab\BondPrefab.cs" />
     <Compile Include="Assets\Scripts\RenderAtomsAndBonds.cs" />
