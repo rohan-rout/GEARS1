@@ -401,11 +401,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7477d7f4405e05340b8c4bff62f1c368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bondPrefab: {fileID: 114359734097127348, guid: 82c4bee8827e7da48b664a98a55f3bd7,
+  bondPrefab: {fileID: 4985759288475294, guid: 7533ac706db207c4e804e13aa3de5bcf, type: 2}
+  carbonAtom: {fileID: 4867531699892760, guid: bdc4faa93be478b41bf67dcce5b279bf, type: 2}
+  hydrogenAtom: {fileID: 4339832537068126, guid: 5d4add17ac42fd347997a7b2e4527005,
     type: 2}
-  atomPrefab: {fileID: 114779165130216366, guid: 03ab4abfe0507c34782e2551c7cd13d2,
+  oxygenAtom: {fileID: 4079127336863444, guid: 526cc8fbc294a5f4097f5f98c9dbef27, type: 2}
+  nitrogenAtom: {fileID: 4186420745794784, guid: be6fead04ed730447aa44af0841cee30,
     type: 2}
-  filePath: Assets/Resources/geninit.xyz
+  filePath: Assets/Resources/rdx.xyz
   newCenter:
   - 2
   - 2
