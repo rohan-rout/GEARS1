@@ -922,10 +922,13 @@
     <Compile Include="Assets\Scripts\Atom.cs" />
     <Compile Include="Assets\Scripts\AtomAttributes.cs" />
     <Compile Include="Assets\Scripts\Bond.cs" />
+    <Compile Include="Assets\Scripts\Graphene.cs" />
     <Compile Include="Assets\Scripts\MolecularDynamics.cs" />
     <Compile Include="Assets\Scripts\prefab\AtomPrefab.cs" />
     <Compile Include="Assets\Scripts\prefab\BondPrefab.cs" />
     <Compile Include="Assets\Scripts\RenderAtomsAndBonds.cs" />
+    <Compile Include="Assets\Scripts\RenderMoS2_scene01.cs" />
+    <Compile Include="Assets\Scripts\RenderMoS2_scene02.cs" />
     <Compile Include="Assets\Scripts\Test\Test.cs" />
     <Compile Include="Assets\Scripts\Test\Test1.cs" />
     <Compile Include="Assets\Scripts\Test\Test3.cs" />

@@ -9,11 +9,14 @@ public class RenderAtomsAndBonds : MonoBehaviour {
     public Transform hydrogenAtom;
     public Transform oxygenAtom;
     public Transform nitrogenAtom;
+    public Transform SulphurAtom;
+    public Transform MoAtom;
 
     public string filePath;
     public double[] newCenter = new double[3];
     private Utility utility = new Utility();
 
+    public int frameCounter;
     public bool calledUtility = false;
 
     public void RenderAtoms()
@@ -51,6 +54,12 @@ public class RenderAtomsAndBonds : MonoBehaviour {
                 case "N": //blue
                     atom = Instantiate(nitrogenAtom);
                     break;
+                case "S":
+                    atom = Instantiate(SulphurAtom);
+                    break;
+                case "Mo":
+                    atom = Instantiate(MoAtom);
+                    break;
                 default:
                     atom = Instantiate(hydrogenAtom);
                     break;
@@ -71,8 +80,8 @@ public class RenderAtomsAndBonds : MonoBehaviour {
                 default:
                     atom.transform.localScale = new Vector3(
                         atom.transform.localScale.x * (float)utility.scaleFactor[0],
-                        atom.transform.localScale.y * (float)utility.scaleFactor[1],
-                        atom.transform.localScale.z * (float)utility.scaleFactor[2]);
+                        atom.transform.localScale.y * (float)utility.scaleFactor[0],
+                        atom.transform.localScale.z * (float)utility.scaleFactor[0]);
                     break;
             }
         }
@@ -82,11 +91,13 @@ public class RenderAtomsAndBonds : MonoBehaviour {
     {
         for(int bondIndex = 0; bondIndex < utility.numAtoms; bondIndex++)
         {
-            //Debug.Log(bondIndex);
+            Debug.Log(utility.l[0] + "," + utility.l[1] + "," + utility.l[2] + ", "+ bondIndex + ","+utility.atomBonds[bondIndex, 0]);
             if (utility.atomBonds[bondIndex, 0] == 0)
                 continue;
             for(int neighbourIndex = 1; neighbourIndex <= utility.atomBonds[bondIndex,0]; neighbourIndex++)
             {
+                Debug.Log("in");
+
                 Transform bond = Instantiate(bondPrefab);
                 //bond.gameObject.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0);
                 bond.transform.parent = this.gameObject.transform;
@@ -123,7 +134,7 @@ public class RenderAtomsAndBonds : MonoBehaviour {
         calledUtility = true;
         
         RenderAtoms();
-        RenderBonds();
+        //RenderBonds();
 	}
 
     

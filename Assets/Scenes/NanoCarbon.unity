@@ -285,11 +285,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7477d7f4405e05340b8c4bff62f1c368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bondPrefab: {fileID: 114359734097127348, guid: 82c4bee8827e7da48b664a98a55f3bd7,
-    type: 2}
-  atomPrefab: {fileID: 114779165130216366, guid: 03ab4abfe0507c34782e2551c7cd13d2,
-    type: 2}
+  bondPrefab: {fileID: 0}
+  carbonAtom: {fileID: 4867531699892760, guid: bdc4faa93be478b41bf67dcce5b279bf, type: 2}
+  hydrogenAtom: {fileID: 0}
+  oxygenAtom: {fileID: 0}
+  nitrogenAtom: {fileID: 0}
+  SulphurAtom: {fileID: 0}
+  MoAtom: {fileID: 0}
   filePath: Assets/Resources/nanocarbon.xyz
+  newCenter:
+  - 2
+  - 2
+  - 2
+  frameCounter: 0
+  calledUtility: 0
 --- !u!4 &1995129717
 Transform:
   m_ObjectHideFlags: 0

@@ -408,11 +408,14 @@ MonoBehaviour:
   oxygenAtom: {fileID: 4079127336863444, guid: 526cc8fbc294a5f4097f5f98c9dbef27, type: 2}
   nitrogenAtom: {fileID: 4186420745794784, guid: be6fead04ed730447aa44af0841cee30,
     type: 2}
-  filePath: Assets/Resources/rdx.xyz
+  SulphurAtom: {fileID: 0}
+  MoAtom: {fileID: 0}
+  filePath: Assets/Resources/nanocarbon.xyz
   newCenter:
   - 2
   - 2
   - 2
+  frameCounter: 0
   calledUtility: 0
 --- !u!114 &1996185834
 MonoBehaviour:

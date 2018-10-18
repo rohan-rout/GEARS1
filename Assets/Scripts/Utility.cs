@@ -13,17 +13,18 @@ public class Utility {
     public AtomAttributes[] atoms;
     public int[,] atomBonds;
     public double[] scaleFactor = new double[3];
+    private bool isCol5 = false;
 
 
-    private double[] l = new double[3] ;
+    public double[] l = new double[3] ;
     private double[] angle = new double[3] ;
     private double[,] H = new double[3, 3];
     private double[,] Hinv = new double[3, 3];
 
     private const double PI = System.Math.PI;
     private const int MAXBONDS = 30;
-    private const double LCUT = 2.5;
-    private const double RCUT = 1.6;
+    private const double LCUT = 4.0;
+    private const double RCUT =1.6;
     private const double RCUTSQ = RCUT * RCUT;
 
     
@@ -78,10 +79,12 @@ public class Utility {
             while ((line = sr.ReadLine()) != null)
             {
                 cdnt = reg.Split(line);
+                if (cdnt.Length == 5) isCol5 = true;
                 if (cdnt.Length < 4)
                     continue;
                 else
                 {
+                    
                     double[] rr = new double[3] { float.Parse(cdnt[1]), float.Parse(cdnt[2]), float.Parse(cdnt[3]) };
                     for (int j = 0; j < 3; j++)
                     {
@@ -90,7 +93,12 @@ public class Utility {
                         if( (double.Parse(cdnt[j + 1]) > maxPos[j]) || (atomIndex == 0) )
                             maxPos[j] = double.Parse(cdnt[j + 1]);
                     }  
-                    atoms[atomIndex] = new AtomAttributes(cdnt[0],rr);
+                    AtomAttributes at = new AtomAttributes(cdnt[0], rr);
+                    if (isCol5)
+                    {
+                        at.stress = int.Parse(cdnt[4]);
+                    }
+                    atoms[atomIndex] = at;
                     atomIndex++;
                     //Debug.Log(atoms[atomIndex].iatom+" , "+atoms[atomIndex].rr0[0] + " , " + atoms[atomIndex].rr0[1] + " , " + atoms[atomIndex].rr0[2]);
                 }
@@ -301,15 +309,17 @@ public class Utility {
 
         for (int index = 0; index < 3; index++)
         {
-            originalCenter[index] = (maxPos[index] - minPos[index]) / 2.0;
+            originalCenter[index] = (maxPos[index] + minPos[index]) / 2.0;
             scaleFactor[index] = newCenter[index] / originalCenter[index];
         }
-
-        for(int atomIndex = 0; atomIndex < numAtoms; atomIndex++)
+        Debug.Log("Original Center: " + originalCenter[0] + " " + originalCenter[1] + " " + originalCenter[2]);
+        for (int atomIndex = 0; atomIndex < numAtoms; atomIndex++)
         {
             for (int i = 0; i < 3; i++)
-                atoms[atomIndex].rr0[i] = scaleFactor[i] * (atoms[atomIndex].rr0[i] - originalCenter[i]) + newCenter[i];
+                atoms[atomIndex].rr0[i] = scaleFactor[0] * (atoms[atomIndex].rr0[i] - originalCenter[i]) + newCenter[i];
         }
+
+        Debug.Log("New Center: " + newCenter[0]+" "+ newCenter[1] +" "+ newCenter[2]);
             
     }
 
@@ -321,9 +331,10 @@ public class Utility {
         RealToNormal();
         LinkedList();
         BondList();
-        //Debug.Log("Min: " + minPos[0] + "," + minPos[1] + "," + minPos[2]);
-        //Debug.Log("Max: " + maxPos[0] + "," + maxPos[1] + "," + maxPos[2]);
         computeDisplacement();
+        Debug.Log("Min: " + minPos[0] + "," + minPos[1] + "," + minPos[2]);
+        Debug.Log("Max: " + maxPos[0] + "," + maxPos[1] + "," + maxPos[2]);
+        
     }
     
 }

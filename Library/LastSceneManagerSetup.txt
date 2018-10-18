@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Demo4(LJ).unity
+- path: Assets/Scenes/mos2-scene2.unity
   isLoaded: 1
   isActive: 1
