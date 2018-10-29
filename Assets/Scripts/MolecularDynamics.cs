@@ -111,7 +111,7 @@ public class MolecularDynamics : MonoBehaviour
         RegionH = new double[3];
 
         InitUcell = new int[3];
-        for (int i = 0; i < 3; ++i) InitUcell[i] = 10;
+        for (int i = 0; i < 3; ++i) InitUcell[i] = 8;
 
         rand = new System.Random();
 

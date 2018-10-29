@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class OctreeComponent : MonoBehaviour {
 
-	public float size = 5;
+	public float[] size = new float[3] { 5,5,5};
 	public int depth = 2;
 
 	// Use this for initialization
@@ -41,7 +41,7 @@ public class OctreeComponent : MonoBehaviour {
 			}
 		}
 
-		Gizmos.DrawWireCube(node.position, Vector3.one * node.size);
+		Gizmos.DrawWireCube(node.position, Vector3.one *node.size[0]);
 	}
 
 }

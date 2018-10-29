@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
-
+using UnityEngine.SceneManagement;
 #if UNITY_WSA || UNITY_STANDALONE_WIN
 using UnityEngine.Windows.Speech;
 #endif
@@ -156,6 +156,23 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         public virtual void OnInputClicked(InputClickedEventData eventData)
         {
+            Debug.Log(gameObject.name);
+            switch (this.gameObject.name)
+            {
+
+                case ("ButtonScene2"):
+                    SceneManager.LoadSceneAsync("testing/Scenes/Scene2", LoadSceneMode.Single);
+                    break;
+
+                case ("ButtonScene3"):
+                    SceneManager.LoadSceneAsync("testing/Scenes/Scene3", LoadSceneMode.Single);
+                    break;
+
+                case ("ButtonScene1"):
+                    SceneManager.LoadSceneAsync("testing/Scenes/Scene1", LoadSceneMode.Single);
+                    break;
+
+            }
             if (!IsEnabled)
             {
                 return;
@@ -289,6 +306,23 @@ namespace HoloToolkit.Examples.InteractiveElements
         /// </summary>
         public virtual void OnInputUp(InputEventData eventData)
         {
+            Debug.Log(gameObject.name);
+            switch (this.gameObject.name)
+            {
+                case ("Button"):
+                    Debug.Log("SDFASDF");
+                    //SceneManager.LoadSceneAsync("testing/Scenes/Scene2", LoadSceneMode.Single);
+                    break;
+
+                case ("ButtonScene3"):
+                    SceneManager.LoadSceneAsync("testing/Scenes/Scene3", LoadSceneMode.Single);
+                    break;
+
+                case ("ButtonScene1"):
+                    SceneManager.LoadSceneAsync("testing/Scenes/Scene1", LoadSceneMode.Single);
+                    break;
+
+            }
             mCheckHold = false;
             HasDown = false;
             mIgnoreSelect = false;

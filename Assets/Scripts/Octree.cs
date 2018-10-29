@@ -18,7 +18,7 @@ public class Octree<TType> {
 	private OctreeNode<TType> node;
 	private int depth;
 
-	public Octree(Vector3 position, float size, int depth)
+	public Octree(Vector3 position, float[] size, int depth)
 	{
 		this.node = new OctreeNode<TType>(position, size);
 		this.node.Subdivide(depth);
@@ -28,11 +28,11 @@ public class Octree<TType> {
 	public class OctreeNode<TType>
 	{
 		public Vector3 position;
-		public float size; 
-		OctreeNode<TType>[] subNodes;
-		IList<TType> value;
+		public float[] size; 
+		public OctreeNode<TType>[] subNodes;
+		public IList<TType> value = new List<TType>();
 
-		public OctreeNode(Vector3 pos, float size)
+		public OctreeNode(Vector3 pos, float[] size)
 		{
 			this.position = pos;
 			this.size = size;
@@ -50,11 +50,12 @@ public class Octree<TType> {
 			{
 				Vector3 newPos = this.position;
 
-				newPos.y += ( ( i & 4 ) == 4 ) ? size * 0.25f : -1.0f * size*0.25f;
-				newPos.x += ( ( i & 2 ) == 2 ) ? size * 0.25f : -1.0f * size * 0.25f;
-				newPos.z += ( ( i & 1 ) == 1 ) ? size * 0.25f : -1.0f * size * 0.25f;
+				newPos.y += ( ( i & 4 ) == 4 ) ? size[1] * 0.25f : -1.0f * size[1] *0.25f;
+				newPos.x += ( ( i & 2 ) == 2 ) ? size[0] * 0.25f : -1.0f * size[0] * 0.25f;
+				newPos.z += ( ( i & 1 ) == 1 ) ? size[2] * 0.25f : -1.0f * size[2] * 0.25f;
 
-				subNodes[i] = new OctreeNode<TType>(newPos, size * 0.5f);
+				float[] newSize = new float[3] { size[0] * 0.5f, size[1] * 0.5f, size[2] * 0.5f };
+				subNodes[i] = new OctreeNode<TType>(newPos,newSize);
 				if (d > 0)
 				{
 					subNodes[i].Subdivide(d - 1);
@@ -68,7 +69,7 @@ public class Octree<TType> {
 		}
 	}
 
-	private int GetIndexOfPosition(Vector3 lookupPosition, Vector3 nodePosition)
+	public int GetIndexOfPosition(Vector3 lookupPosition, Vector3 nodePosition)
 	{ 
 		int index = 0;
 		index |= lookupPosition.y > nodePosition.y ? 4 : 0;

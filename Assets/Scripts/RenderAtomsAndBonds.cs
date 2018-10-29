@@ -134,7 +134,7 @@ public class RenderAtomsAndBonds : MonoBehaviour {
         calledUtility = true;
         
         RenderAtoms();
-        //RenderBonds();
+        RenderBonds();
 	}
 
     

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Text.RegularExpressions;
+using UnityEngine.Windows;
 
 public class Utility {
 
@@ -34,8 +35,8 @@ public class Utility {
     private int[] numAtomsPerList,lList;
     private int[,,] lshd;
 
-    private double[] maxPos = new double[3];
-    private double[] minPos = new double[3];
+    public double[] maxPos = new double[3];
+    public double[] minPos = new double[3];
 
     public string FilePath{
         get { return filePath; }
@@ -53,57 +54,57 @@ public class Utility {
         Regex reg = new Regex(@"\s+");
         int atomIndex = 0;
 
-        using (StreamReader sr = new StreamReader(filePath))
-        {
-            string line = sr.ReadLine().Trim();
-            //Debug.Log("Line: " + line + "\n");
-            string[] cdnt = reg.Split(line);
-            //Debug.Log("FirstLine: " + cdnt+"\n");
-            numAtoms = int.Parse(cdnt[0]);
-            atoms = new AtomAttributes[numAtoms];
-            
-            //Get information about the box
-            line = sr.ReadLine().Trim();
-            cdnt = reg.Split(line);
-            /*
-            Debug.Log("Second Line: " + line);
-            for(int index = 0;index < cdnt.Length; index+=1)
-                Debug.Log("Second Line: " + index +"    "+cdnt[index]);
-            */
-            for (int index = 0; index < 3; index++)
-            {
-                l[index] = float.Parse(cdnt[index]);
-                angle[index] = float.Parse(cdnt[index+3]);
-            }
+    using (StreamReader sr = new StreamReader(filePath))
+    {
+      string line = sr.ReadLine().Trim();
+      //Debug.Log("Line: " + line + "\n");
+      string[] cdnt = reg.Split(line);
+      //Debug.Log("FirstLine: " + cdnt+"\n");
+      numAtoms = int.Parse(cdnt[0]);
+      atoms = new AtomAttributes[numAtoms];
 
-            while ((line = sr.ReadLine()) != null)
-            {
-                cdnt = reg.Split(line);
-                if (cdnt.Length == 5) isCol5 = true;
-                if (cdnt.Length < 4)
-                    continue;
-                else
-                {
-                    
-                    double[] rr = new double[3] { float.Parse(cdnt[1]), float.Parse(cdnt[2]), float.Parse(cdnt[3]) };
-                    for (int j = 0; j < 3; j++)
-                    {
-                        if( (double.Parse(cdnt[j + 1]) < minPos[j]) || (atomIndex == 0) )
-                            minPos[j] = double.Parse(cdnt[j + 1]);
-                        if( (double.Parse(cdnt[j + 1]) > maxPos[j]) || (atomIndex == 0) )
-                            maxPos[j] = double.Parse(cdnt[j + 1]);
-                    }  
-                    AtomAttributes at = new AtomAttributes(cdnt[0], rr);
-                    if (isCol5)
-                    {
-                        at.stress = int.Parse(cdnt[4]);
-                    }
-                    atoms[atomIndex] = at;
-                    atomIndex++;
-                    //Debug.Log(atoms[atomIndex].iatom+" , "+atoms[atomIndex].rr0[0] + " , " + atoms[atomIndex].rr0[1] + " , " + atoms[atomIndex].rr0[2]);
-                }
-            }
+      //Get information about the box
+      line = sr.ReadLine().Trim();
+      cdnt = reg.Split(line);
+      /*
+      Debug.Log("Second Line: " + line);
+      for(int index = 0;index < cdnt.Length; index+=1)
+          Debug.Log("Second Line: " + index +"    "+cdnt[index]);
+      */
+      for (int index = 0; index < 3; index++)
+      {
+        l[index] = float.Parse(cdnt[index]);
+        angle[index] = float.Parse(cdnt[index + 3]);
+      }
+
+      while ((line = sr.ReadLine()) != null)
+      {
+        cdnt = reg.Split(line);
+        if (cdnt.Length == 5) isCol5 = true;
+        if (cdnt.Length < 4)
+          continue;
+        else
+        {
+
+          double[] rr = new double[3] { float.Parse(cdnt[1]), float.Parse(cdnt[2]), float.Parse(cdnt[3]) };
+          for (int j = 0; j < 3; j++)
+          {
+            if ((double.Parse(cdnt[j + 1]) < minPos[j]) || (atomIndex == 0))
+              minPos[j] = double.Parse(cdnt[j + 1]);
+            if ((double.Parse(cdnt[j + 1]) > maxPos[j]) || (atomIndex == 0))
+              maxPos[j] = double.Parse(cdnt[j + 1]);
+          }
+          AtomAttributes at = new AtomAttributes(cdnt[0], rr);
+          if (isCol5)
+          {
+            at.stress = int.Parse(cdnt[4]);
+          }
+          atoms[atomIndex] = at;
+          atomIndex++;
+          //Debug.Log(atoms[atomIndex].iatom+" , "+atoms[atomIndex].rr0[0] + " , " + atoms[atomIndex].rr0[1] + " , " + atoms[atomIndex].rr0[2]);
         }
+      }
+    }
     }
 
     public void Hmatrix()
@@ -310,13 +311,26 @@ public class Utility {
         for (int index = 0; index < 3; index++)
         {
             originalCenter[index] = (maxPos[index] + minPos[index]) / 2.0;
-            scaleFactor[index] = newCenter[index] / originalCenter[index];
+            scaleFactor[index] = newCenter[0] / originalCenter[0];
         }
         Debug.Log("Original Center: " + originalCenter[0] + " " + originalCenter[1] + " " + originalCenter[2]);
+
         for (int atomIndex = 0; atomIndex < numAtoms; atomIndex++)
         {
-            for (int i = 0; i < 3; i++)
-                atoms[atomIndex].rr0[i] = scaleFactor[0] * (atoms[atomIndex].rr0[i] - originalCenter[i]) + newCenter[i];
+			for (int i = 0; i < 3; i++)
+			{
+				atoms[atomIndex].rr0[i] = scaleFactor[0] * (atoms[atomIndex].rr0[i] - originalCenter[i]) + newCenter[i];
+				if (atomIndex == 0)
+				{
+					maxPos[i] = atoms[atomIndex].rr0[i];
+					minPos[i] = atoms[atomIndex].rr0[i];
+				}
+				else
+				{
+					maxPos[i] = System.Math.Max(maxPos[i],atoms[atomIndex].rr0[i]);
+					minPos[i] = System.Math.Min(minPos[i], atoms[atomIndex].rr0[i]);
+				}
+			}	
         }
 
         Debug.Log("New Center: " + newCenter[0]+" "+ newCenter[1] +" "+ newCenter[2]);
@@ -332,8 +346,8 @@ public class Utility {
         LinkedList();
         BondList();
         computeDisplacement();
-        Debug.Log("Min: " + minPos[0] + "," + minPos[1] + "," + minPos[2]);
-        Debug.Log("Max: " + maxPos[0] + "," + maxPos[1] + "," + maxPos[2]);
+        //Debug.Log("Min: " + minPos[0] + "," + minPos[1] + "," + minPos[2]);
+        //Debug.Log("Max: " + maxPos[0] + "," + maxPos[1] + "," + maxPos[2]);
         
     }
     

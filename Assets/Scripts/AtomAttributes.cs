@@ -1,4 +1,5 @@
-﻿public class AtomAttributes{
+﻿using UnityEngine;
+public class AtomAttributes{
     public string iatom;
 
     public double[] rr0 = new double[3];
@@ -7,6 +8,8 @@
     public int[] cellId = new int[3];
     public int cellNumber;
     public int stress;
+
+	public Transform atomInstance = null;
 
     public AtomAttributes(string atomName,double[] rr)
     {

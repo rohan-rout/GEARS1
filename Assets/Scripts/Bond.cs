@@ -11,7 +11,7 @@ public class Bond : MonoBehaviour
     void Start()
     {
         string line;
-        using (StreamReader sr = new StreamReader(filePath))
+    using (StreamReader sr = new StreamReader(new MemoryStream(System.Text.Encoding.Unicode.GetBytes(filePath)))) 
         {
             while ((line = sr.ReadLine()) != null)
             {

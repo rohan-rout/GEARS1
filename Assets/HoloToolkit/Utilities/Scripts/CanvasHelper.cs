@@ -32,8 +32,12 @@ namespace HoloToolkit.Unity
 
             if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace)
             {
-                Canvas.worldCamera = FocusManager.Instance.UIRaycastCamera;
+        Canvas.worldCamera = MixedRealityCameraManager.Instance.GetComponent<Camera>();
             }
-        }
+      if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.ScreenSpaceCamera)
+      {
+        Canvas.worldCamera = MixedRealityCameraManager.Instance.GetComponent<Camera>();
+      }
+    }
     }
 }
